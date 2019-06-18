@@ -1,10 +1,6 @@
 pipeline {
 
-  agent {
-    node {
-      label 'master'
-    }
-  }
+  agent any
 
   options {
     timestamps()
@@ -17,17 +13,14 @@ pipeline {
         sh '/bin/phpunit ${WORKSPACE}/src'
       }
     }
-    stage('JIRA') {
-      when {
-        not {
-          branch 'master'
-        }
-      }
-      steps {
-        script {
-          response = jiraAddComment site: 'practical-jenkins-jira', idOrKey: env.GIT_BRANCH, comment: "Build result: Job - ${JOB_NAME} Build number - ${BUILD_NUMBER} Build URL - ${BUILD_URL}"
-        }
-      }
+  }
+
+  post {
+    failure {
+      slackSend "Build failed - Job: ${JOB_NAME} - Build No.: ${BUILD_NUMBER} - Build URL: (<${BUILD_URL}|Open>)"
+    }
+    changed {
+      slackSend "Build status changed - Job: ${JOB_NAME} - Build No.: ${BUILD_NUMBER} - Build URL: (<${BUILD_URL}|Open>)"
     }
   }
 }
