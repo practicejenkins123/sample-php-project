@@ -15,12 +15,12 @@ pipeline {
     }
   }
 
-  post {
+ post {
     failure {
-      slackSend message: "Build failed - Job: failed"
+      slackSend message: "Build failed - Job: ${JOB_NAME} - Build No.: ${BUILD_NUMBER} - Build URL: (<${BUILD_URL}|Open>)"
     }
     changed {
-      slackSend message: "Build status changed - Job: Changed"
+      slackSend message: "Build status changed - Job: ${JOB_NAME} - Build No.: ${BUILD_NUMBER} - Build URL: (<${BUILD_URL}|Open>)"
     }
   }
 }
