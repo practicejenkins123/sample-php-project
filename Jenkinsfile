@@ -16,6 +16,10 @@ pipeline {
   }
 
  post {
+   success{
+     slackSend message: "Build success - Job: ${JOB_NAME} - Build No.: ${BUILD_NUMBER} - Build URL: (<${BUILD_URL}|Open>)"
+   }
+  
     failure {
       slackSend message: "Build failed - Job: ${JOB_NAME} - Build No.: ${BUILD_NUMBER} - Build URL: (<${BUILD_URL}|Open>)"
     }
