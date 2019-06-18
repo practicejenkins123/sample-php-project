@@ -17,10 +17,10 @@ pipeline {
 
   post {
     failure {
-      slackSend "Build failed - Job: failed"
+      slackSend message: "Build failed - Job: failed"
     }
     changed {
-      slackSend "Build status changed - Job: Changed"
+      slackSend message: "Build status changed - Job: Changed"
     }
   }
 }
