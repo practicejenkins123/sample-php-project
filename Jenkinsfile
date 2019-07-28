@@ -9,7 +9,9 @@ pipeline {
    options {
     timestamps()
   }
-  
+  environment {  EMAIL_RECIPIENTS = "practicejenkins123@gmail.com"
+ }
+
    stages {
     stage('PHPUnit Test') {
       steps {
@@ -33,7 +35,8 @@ pipeline {
 	
  post{
 	always{
-		emailext body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
+		emailext to: "${env.EMAIL_RECIPIENTS}",
+		body: "${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL}",
                 recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
                 subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}"
 	}
